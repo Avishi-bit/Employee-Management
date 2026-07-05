@@ -38,7 +38,7 @@ A beginner-friendly C++ console application that manages restaurant employees us
 
 ## Class Structure
 
-
+```text
 Employee
 ├── Chef
 │   └── HeadChef
@@ -46,18 +46,25 @@ Employee
 │   └── HeadWaiter
 ├── Peon
 └── GeneralManager
-
+```
 
 ## How to Run
 
 1. Compile the program:
-g++ employee_management.cpp -o employee_management
 
+```bash
+g++ employee_management.cpp -o employee_management
+```
 
 2. Run the program:
+
+```bash
 ./employee_management
+```
 
 ## Example Menu
+
+```text
 1. Chef
 2. Head Chef
 3. Waiter
@@ -66,6 +73,7 @@ g++ employee_management.cpp -o employee_management
 6. General Manager
 7. Display All Employees
 8. Exit
+```
 
 ## Technologies Used
 
