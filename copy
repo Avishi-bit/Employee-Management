@@ -1,0 +1,272 @@
+// make an employee managment system and use polymorphism, make smtg universal, make some child classes, wtc.
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+//Employee registers - get's an emp ID, set's a password, logs past work experience, references etc, and qualifications, and anything
+//needed depending on their specific job position
+
+//GETSET FUNCTIONS
+// UI CLASS FOR GETTING I/P
+
+//RESTARAUNT MANAGEMENT
+class Employee { 
+    private: 
+        int emp_ID; 
+        string password; 
+        
+    protected: 
+        string name; 
+        string gender; // use enum
+        int salary; 
+        int experience; 
+    
+    public:    
+        Employee(int id,int roleSalary) { 
+            emp_ID = id; 
+            salary = roleSalary; 
+            cout << "\n======= EMPLOYEE DETAILS =======" << endl; 
+            cout << "Enter your name: "; getline(cin, name); 
+            cout << "Enter your gender: "; getline(cin, gender); 
+            cout << "Enter your password: "; getline(cin, password); 
+            cout << "Enter years of experience: "; cin >> experience; 
+            cout << "Your Employee ID is: " << emp_ID << endl; 
+            cin.ignore();
+            // shift to main
+            // add data validation
+        } 
+            
+        virtual void displayDetails() { 
+            cout << "\n------- EMPLOYEE DETAILS -------" << endl; 
+            cout << "Employee ID: " << emp_ID << endl; 
+            cout << "Name: " << name << endl; 
+            cout << "Gender: " << gender << endl; 
+            cout << "Experience: " << experience << " years" << endl; 
+            cout << "Salary: Rs. " << salary << endl; 
+        }
+};
+        
+class Chef: public Employee{
+    //data
+    protected:
+        string speciality;
+
+
+    //function
+    public:
+        Chef(int id, int chefSalary = 100000): Employee(id,chefSalary){
+            cout << "Enter Speciality: ";
+            getline(cin,speciality);
+        }
+
+        void displayDetails(){
+            Employee::displayDetails();
+
+            cout << "Role: Chef" << endl;
+            cout << "Speciality: " << speciality << endl;
+        }
+    
+};
+
+class headChef: public Chef{
+
+    //data
+    private: 
+        string cul_school;
+        int chefs_managed;
+
+    //function
+    public: 
+        headChef(int id,int hchef_salary = 150000) : Chef(id,hchef_salary){
+            cout << "Enter Culinary School: ";
+            getline(cin, cul_school);
+
+            cout << "Number of Chefs Managed: "; cin >> chefs_managed;
+            cin.ignore();
+        }
+
+        void displayDetails(){
+            Employee::displayDetails();
+
+            cout << "Role: Head Chef" << endl;
+            cout << "Speciality: " << speciality << endl;
+            cout << "Culinary School: " << cul_school << endl;
+            cout << "Number of Chefs Managed: " << chefs_managed << endl;
+        }
+};
+
+class Waiter: public Employee{
+
+    //data
+    protected: 
+        string shift;
+
+    //function
+    public: 
+        Waiter(int id,int wSalary = 50000): Employee(id,wSalary){
+            cout << "Enter Shift: ";
+            getline(cin, shift);
+        }
+
+        void displayDetails(){
+            Employee::displayDetails();
+
+            cout << "Role: Waiter" << endl;
+            cout << "Shift: " << shift << endl;
+        }
+
+};
+
+class headWaiter: public Waiter{
+    //data
+    private: 
+
+        int waitersManaged; 
+
+    //functions
+    public: 
+        headWaiter(int id,int hwSalary = 70000) : Waiter(id,hwSalary) { 
+            cout << "Enter number of waiters managed: "; cin >> waitersManaged; 
+            cin.ignore();
+        } 
+        void displayDetails() { 
+            Employee::displayDetails(); 
+
+            cout << "Role: Head Waiter" << endl; 
+            cout << "Shift: " << shift << endl; 
+            cout << "Waiters Managed: " << waitersManaged << endl; 
+        }
+
+};
+
+class Peon: public Employee{
+
+    //data
+    private:
+        string assignedArea;
+
+    //function
+    public:
+        Peon(int id,int pSalary = 20000) : Employee(id,pSalary){
+            cout << "Enter Assigned Area: ";
+            getline(cin, assignedArea);
+        }
+
+        void displayDetails(){
+            Employee::displayDetails();
+            cout << "Role: Peon" << endl;
+            cout << "Assigned Area: " << assignedArea << endl;
+        }
+};
+
+class genManager: public Employee{
+
+    //data
+    private:
+        string department; 
+        int staffManaged;
+
+    //function
+    public:
+        genManager(int id,int gmSalary = 200000) : Employee(id,gmSalary){
+
+            cout << "Enter department managed: "; 
+            getline(cin, department); 
+
+            cout << "Enter number of staff managed: "; cin >> staffManaged;
+            cin.ignore();
+        }
+
+        void displayDetails(){
+            Employee::displayDetails();
+
+            cout << "Role: General Manager" << endl; 
+            cout << "Department: " << department << endl; 
+            cout << "Staff Managed: " << staffManaged << endl;
+        }
+};
+
+
+int main(){
+    
+    vector <Employee*> employees;
+    int choice;
+    int next_ID = 100;
+
+    do
+    {
+        cout << "\n==============EMPLOYEE REGISTERATION=============="<<endl;
+        cout << "Choose your position: " << endl;
+        cout << "1. Chef" << endl;
+        cout << "2. Head Chef" << endl;
+        cout << "3. Waiter" << endl;
+        cout << "4. Head Waiter" << endl;
+        cout << "5. Peon" << endl;
+        cout << "6. General Manager" << endl;
+        cout << "7. Display All Employees" << endl;
+        cout << "8. EXIT" << endl;
+
+        cout << "Enter your choice: "; cin >> choice;
+        cin.ignore();
+
+        switch (choice)
+        {
+        case 1:
+            employees.push_back(new Chef(next_ID));
+            next_ID++;
+            break;
+        
+        case 2:
+            employees.push_back(new headChef(next_ID));
+            next_ID++;
+            break;
+
+        case 3:
+            employees.push_back(new Waiter(next_ID));
+            next_ID++;
+            break;
+
+        case 4:
+            employees.push_back(new headWaiter(next_ID));
+            next_ID++;
+            break;
+
+        case 5:
+            employees.push_back(new Peon(next_ID));
+            next_ID++;
+            break;
+
+        case 6:
+            employees.push_back(new genManager(next_ID));
+            next_ID++;
+            break;
+
+        case 7:
+            if(employees.empty()){
+                cout << "No employees registered." << endl;
+            }
+            else{
+                for(int i = 0; i < employees.size(); i++){
+                    employees[i] -> displayDetails();
+                }
+            }
+            break;
+
+        case 8:
+            cout << "Thank you." << endl;
+            break;
+        
+        default:
+            cout << "Invalid Choice." << endl;
+            break;
+        }
+
+    } while (choice != 8);
+
+    for(int i = 0; i < employees.size(); i++){
+        delete employees[i];
+    }
+}
