@@ -28,6 +28,44 @@ class Employee {
             role = emp_role;
         }
 
+        // GET FUNCTIONS
+        int getID() {
+            return emp_ID;
+        }
+
+        string getName() {
+            return name;
+        }
+
+        string getGender() {
+            return gender;
+        }
+
+        int getSalary() {
+            return salary;
+        }
+
+        int getExperience() {
+            return experience;
+        }
+
+        string getRole() {
+            return role;
+        }
+
+        // SET FUNCTIONS
+        void setName(string given_name) {
+            name = given_name;
+        }
+
+        void setGender(string given_gender) {
+            gender = given_gender;
+        }
+
+        void setExperience(int yrs_exp) {
+            experience = yrs_exp;
+        }
+
         virtual void displayDetails() {
             cout << "\n------- EMPLOYEE DETAILS -------" << endl;
             cout << "Employee ID: " << emp_ID << endl;
@@ -40,49 +78,18 @@ class Employee {
 };
 
 
-// UI class
-class Details {
-    private:
-        string password;
-
-    public:
-        string name;
-        string gender;
-        int experience;
-
-        void enter_data() {
-            cout << "\n======= EMPLOYEE DETAILS =======" << endl;
-            cout << "Enter your name: ";
-            getline(cin, name);
-            cout << "Enter your gender: ";
-            getline(cin, gender);
-            cout << "Enter your password: ";
-            getline(cin, password);
-            cout << "Enter years of experience: "; cin >> experience;
-            cin.ignore();
-        }
-};
-
-
 class Chef : public Employee {
     protected:
         string speciality;
 
     public:
-        Chef(int id, int chefSalary = 100000, string role =  "Chef"): Employee(id, chefSalary, "", "", 0, role) {
-            Details details;
-            details.enter_data();
-            name = details.name;
-            gender = details.gender;
-            experience = details.experience;
-
-            cout << "Enter Speciality: ";
-            getline(cin, speciality);
+        Chef(int id, string name, string gender, int experience, string given_speciality,int chefSalary = 100000, string role = "Chef")
+            :Employee(id, chefSalary, name, gender, experience, role) {
+            speciality = given_speciality;
         }
 
-        void displayDetails(){
+        void displayDetails() {
             Employee::displayDetails();
-
             cout << "Speciality: " << speciality << endl;
         }
 };
@@ -94,19 +101,15 @@ class headChef : public Chef {
         int chefs_managed;
 
     public:
-        headChef(int id, int hchef_salary = 150000, string role = "Head Chef") : Chef(id, hchef_salary,role) {
-            
-            cout << "Enter Culinary School: ";
-            getline(cin, cul_school);
-            cout << "Number of Chefs Managed: ";
-            cin >> chefs_managed;
-            
-            cin.ignore();
+        headChef(int id, string name, string gender, int experience, string speciality,string school, int managed, int hchef_salary = 150000,string role = "Head Chef")
+            :Chef(id, name, gender, experience, speciality, hchef_salary, role) {
+
+            cul_school = school;
+            chefs_managed = managed;
         }
 
-        void displayDetails(){
+        void displayDetails() {
             Employee::displayDetails();
-
             cout << "Speciality: " << speciality << endl;
             cout << "Culinary School: " << cul_school << endl;
             cout << "Number of Chefs Managed: " << chefs_managed << endl;
@@ -119,16 +122,10 @@ class Waiter : public Employee {
         string shift;
 
     public:
-        Waiter(int id, int wSalary = 50000, string role = "Waiter"): Employee(id, wSalary, "", "", 0, role) {
-
-            Details details;
-            details.enter_data();
-            name = details.name;
-            gender = details.gender;
-            experience = details.experience;
+        Waiter(int id, string name, string gender, int experience, string given_shift,int wSalary = 50000, string role = "Waiter")
+            :Employee(id, wSalary, name, gender, experience, role) {
             
-            cout << "Enter Shift: ";
-            getline(cin, shift);
+            shift = given_shift;
         }
 
         void displayDetails() {
@@ -143,10 +140,10 @@ class headWaiter : public Waiter {
         int waitersManaged;
 
     public:
-        headWaiter(int id, int hwSalary = 70000, string role = "Head Waiter") : Waiter(id, hwSalary, role) {
-            cout << "Enter number of waiters managed: ";
-            cin >> waitersManaged;
-            cin.ignore();
+        headWaiter(int id, string name, string gender, int experience, string shift,int managed, int hwSalary = 70000, string role = "Head Waiter")
+            :Waiter(id, name, gender, experience, shift, hwSalary, role) {
+            
+            waitersManaged = managed;
         }
 
         void displayDetails() {
@@ -162,16 +159,10 @@ class Peon : public Employee {
         string assignedArea;
 
     public:
-        Peon(int id, int pSalary = 20000, string role = "Peon"): Employee(id, pSalary, "", "", 0, role) {
-
-            Details details;
-            details.enter_data();
-            name = details.name;
-            gender = details.gender;
-            experience = details.experience;
+        Peon(int id, string name, string gender, int experience, string area,int pSalary = 20000, string role = "Peon")
+            :Employee(id, pSalary, name, gender, experience, role) {
             
-            cout << "Enter Assigned Area: ";
-            getline(cin, assignedArea);
+            assignedArea = area;
         }
 
         void displayDetails() {
@@ -187,17 +178,11 @@ class genManager : public Employee {
         int staffManaged;
 
     public:
-        genManager(int id, int gmSalary = 200000, string role = "General Manager") : Employee(id, gmSalary, "", "", 0, role) {
-            Details details;
-            details.enter_data();
-            name = details.name;
-            gender = details.gender;
-            experience = details.experience;
+        genManager(int id, string name, string gender, int experience, string given_department, int managed, int gmSalary = 200000, string role = "General Manager")
+            :Employee(id, gmSalary, name, gender, experience, role) {
             
-            cout << "Enter department managed: ";
-            getline(cin, department);
-            cout << "Enter number of staff managed: "; cin >> staffManaged;
-            cin.ignore();
+            department = given_department;
+            staffManaged = managed;
         }
 
         void displayDetails() {
@@ -229,36 +214,103 @@ int main() {
         cin >> choice;
         cin.ignore();
 
+        string name;
+        string gender;
+        int experience;
+
+        if (choice >= 1 && choice <= 6) {
+            cout << "\n======= EMPLOYEE DETAILS =======" << endl;
+            cout << "Enter your name: ";
+            getline(cin, name);
+            cout << "Enter your gender: ";
+            getline(cin, gender);
+            cout << "Enter years of experience: ";
+            cin >> experience;
+            cin.ignore();
+        }
+
         switch (choice) {
-            case 1:
-                employees.push_back(new Chef(next_ID));
-                next_ID++;
-                break;
+            case 1: {
+                string speciality;
+                cout << "Enter Speciality: ";
+                getline(cin, speciality);
 
-            case 2:
-                employees.push_back(new headChef(next_ID));
+                employees.push_back(new Chef(next_ID, name, gender, experience, speciality));
                 next_ID++;
+                cout << "Employee Added." <<endl;
                 break;
+            }
 
-            case 3:
-                employees.push_back(new Waiter(next_ID));
-                next_ID++;
-                break;
+            case 2: {
+                string speciality;
+                string cul_school;
+                int chefs_managed;
 
-            case 4:
-                employees.push_back(new headWaiter(next_ID));
-                next_ID++;
-                break;
+                cout << "Enter Speciality: ";
+                getline(cin, speciality);
+                cout << "Enter Culinary School: ";
+                getline(cin, cul_school);
+                cout << "Number of Chefs Managed: ";
+                cin >> chefs_managed;
+                cin.ignore();
 
-            case 5:
-                employees.push_back(new Peon(next_ID));
+                employees.push_back(new headChef(next_ID, name, gender, experience, speciality, cul_school, chefs_managed));
                 next_ID++;
+                cout << "Employee Added." <<endl;
                 break;
+            }
 
-            case 6:
-                employees.push_back(new genManager(next_ID));
+            case 3: {
+                string shift;
+                cout << "Enter Shift: ";
+                getline(cin, shift);
+
+                employees.push_back(new Waiter(next_ID, name, gender, experience, shift));
                 next_ID++;
+                cout << "Employee Added." <<endl;
                 break;
+            }
+
+            case 4: {
+                string shift;
+                int waitersManaged;
+                cout << "Enter Shift: ";
+                getline(cin, shift);
+                cout << "Enter number of waiters managed: ";
+                cin >> waitersManaged;
+                cin.ignore();
+
+                employees.push_back(new headWaiter(next_ID, name, gender, experience, shift, waitersManaged));
+                next_ID++;
+                cout << "Employee Added." <<endl;
+                break;
+            }
+
+            case 5: {
+                string assignedArea;
+                cout << "Enter Assigned Area: ";
+                getline(cin, assignedArea);
+                
+                employees.push_back(new Peon(next_ID, name, gender, experience, assignedArea));
+                next_ID++;
+                cout << "Employee Added." <<endl;
+                break;
+            }
+
+            case 6: {
+                string department;
+                int staffManaged;
+                cout << "Enter department managed: ";
+                getline(cin, department);
+                cout << "Enter number of staff managed: ";
+                cin >> staffManaged;
+                cin.ignore();
+
+                employees.push_back(new genManager(next_ID, name, gender, experience,department, staffManaged));
+                next_ID++;
+                cout << "Employee Added." <<endl;
+                break;
+            }
 
             case 7:
                 if (employees.empty()) {
